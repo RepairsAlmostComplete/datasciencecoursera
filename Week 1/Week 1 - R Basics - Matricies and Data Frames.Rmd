@@ -1,0 +1,143 @@
+---
+title: "Week 1 - R Basics - Matricies and Data Frames"
+author: "Sally Longmore"
+date: "22/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this lesson, we will cover marticies and data frames. Both represent 'rectangular' data types, meaning that they are used to store tabular data, with rows and columns.
+
+The main difference, as you'll see, is that matrices can only contain a single class of data, while data frames can consist of many different classes of data.
+
+Let's create a vector containing the numbers 1 through 20 using the **:** operator. Store the result in a variable called my_vector.
+
+```{r}
+my_vector <- 1:20
+my_vector
+```
+
+The dim() functon tells us the **dimensions** of an object. What happens if we do dim(my_vector)?
+
+```{r}
+dim(my_vector)
+```
+
+Clearly, that is not very helpful! since my_vector is a vector, it doesn't have any dimensions and therefore no **dim** attribute, so it is just NULL. But we can find its length using the length() function.
+
+```{r}
+length(my_vector)
+```
+
+What happens if we give my_vector a **dim** attribute? Let's give it a try.
+
+```{r}
+dim(my_vector) <- c(4, 5)
+```
+
+It's ok if the last command seemed a little strange to you. It should! The dim() function allows you to get OR set the **dim** attribute for an R object. In this case, we assigned the vale c(4, 5) to the **dim** attribte of my_vector.
+
+Use dim(my_vector) to confirm that we have set the **dim** attribute correctly.
+
+```{r}
+dim(my_vector)
+```
+
+Another way to see this is by calling the attributes() function on my_vector.
+
+```{r}
+attributes(my_vector)
+```
+
+When dealing with 2-dimensional objects, the first number is the number of rows and the second is the number of columns. Therefore, we just gave my_vector 4 rows and 5 columns.
+
+That does not sound like a vector any more. Well, it's not. Now it is called a matrix. View the contents of my_vector now to see what it looks like.
+
+```{r}
+my_vector
+```
+
+Now, let's confirm it is actually a matrix by using the class() function. Type class(my_vector).
+
+```{r}
+class(my_vector)
+```
+
+As you can see my_vector is now a matrix. We should store it in a new variable that helps us remember what it is. Store the value of my_vector in a new variable called my_matrix.
+
+```{r}
+my_matrix <- my_vector
+```
+
+The example that we have used thus far was meant to illustrate the point that a matrix is simply an atomic vector with a dimension attribute. A more direct method of creating the same matrix uses the matrix() function.
+
+Create a matrix containing the numbers 1 to 20 with dimensions of 4 rows and 5 columns.
+
+```{r}
+my_matrix2 <- matrix(1:20, nrow = 4, ncol = 5)
+```
+
+Finally, let's confirm that my_matrix and my_matrix2 are identical by using the identical() function.
+
+```{r}
+identical(my_matrix, my_matrix2)
+```
+
+Imagaine that the numbers in our table represent some measurements from a clinical experiment, where each row represents one patient and each column represents on variable for which measurements were taken.
+
+We may want to label the rows so that we know which numbers belong to each patient in the experiment. One way to do this is to add a column to the matrix which cintains the names of all four people.
+
+Lets start by creating a character vector containing the names of our patients -- Bill, Gina, Kelly and Sean. Remember that double quotes tell R that something is a character string. Store the results in a variable called patients.
+
+```{r}
+patients <- c("Bill", "Gina", "Kelly", "Sean")
+```
+
+Now we will use the cbind() function to **combine columns**. Don't worry about storing the results in a new variable.
+
+```{r}
+my_matrix <- cbind(patients, my_matrix)
+my_matrix
+```
+
+It appears that combining the character vector with our matrix of numbers caused everything to be enclosed in double quotes. This means that the numbers have been implicitly coerced into being characters.
+
+This is because matricies can contain only one class of data.
+
+We can convert the matrix into a data frame to allow us to have both characters and numbers.
+
+```{r}
+my_data <- data.frame(my_matrix)
+my_data
+```
+
+It looks like the data.frame() function allowed us to store our character vector of names right alonside our matrix of numbers, which is what we were after.
+
+Behind the scenes, the data.frame() function takes any number of arguments and returns a single object of class **data.frame** that is composed of the original objects.
+
+My calling the class() funciton we can confirm the class of my_data.
+
+```{r}
+class(my_data)
+```
+
+It is also possible to assign names to the individual rows and columns of a data frame object, which presents another possible way of determining which row of values in our table belongs to which patient.
+
+However, since we have already solved the problem, let's solve a different problem by assigning names to the columns of our data frame so that we know what type of measurement each column represents.
+
+Since we have six columns including the patient name, we will first create a vector containing on element for each column.
+
+```{r}
+cnames <- c("patient", "age", "weight", "bp", "rating", "test")
+```
+
+Now we use the colnames() function to set the **colnames** attribute for our data frame.
+
+```{r}
+colnames(my_data) <- cnames
+my_data
+```
+

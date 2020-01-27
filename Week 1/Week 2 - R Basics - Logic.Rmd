@@ -1,0 +1,241 @@
+---
+title: "Week 2 - R Basics - Logic"
+author: "Sally Longmore"
+date: "23/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This lesson is meant to be a short introduction to logical operations in R.
+
+There are two logical values in R, also called boolean values. They are TRUE and FALSE. In R you can construct logical expressions which will evaluate to either TRUE or FALSE.
+
+Many of the questions in this lession will involve evaluating logical expressions. It may be useful to open up a second R terminal where you can experiment with some of these expressions.
+
+Creating logical expressions requires logical operators. The first logical operator we are going to discuss is the quality operator, represented by two equal signs **==**. Use the equality operator below to find out if TRUE is equal to TRUE.
+
+```{r}
+TRUE == TRUE
+```
+
+Just like arithmetic, logical expressions can be grouped by parenthesis so that the entire expression (TRUE == TRUE) == TRUE evaluates to TRUE.
+
+To test this out, evaluate (FALSE == TRUE) == FALSE
+
+```{r}
+(FALSE == TRUE) == FALSE
+```
+
+The equality operator can also be used to compare numbers. Use **==** to see if 6 is equal to 7
+
+```{r}
+6 == 7
+```
+
+The previous expression evaluates to FALSE because 6 is less than 7. Thank fully, there are inequality operators that allow us to test if a value is less than or greater than another value.
+
+The less than operator **<** tests whether the number of the left side of the operator (called the left operant) is less than the number on the right side of the operator (called the right operand). Write an expression to test whether 6 is less than 7.
+
+```{r}
+♠6 < 7
+```
+
+There is also a *less-than-or-equal-to** operator **<=** which test whether the left operant is less than or equal to the right operand. Write an expression to test if 10 is less than or equal to 10.
+
+```{r}
+10 <= 10
+```
+
+Keep in mind that there are the corresponding greater than **>** and greater-than-or-equal-to **>=** operators.
+
+The next operator we will discuss is the **not equal** operator represented by **!=**. Not equal tests whether the two values are unequal, so TRUE != FALSE evaluates to TRUE. Like the equality operator, **!=!! can also be used with numbers. Try writing an expression to see if 5 is not equal to 7.
+
+```{r}
+5 != 7
+```
+
+In order to negate boolean expressions you can use the NOT operator. An exclamination point **!** will cause !TRUE to evaluate to FALSE and !FALSE to evaluate to TRUE. Try using the NOT operator and the equals operator to find the opposite of whether 5 is equal to 7.
+
+```{r}
+!(5 == 7)
+```
+
+At some point you may need to examine relationships between multiple logical expressions. This is where the **AND** operator and the **OR** operator come in.
+
+Let's look at how the AND operator works. There are two **AND** operators in R, **&** and **&&**. Both operators work similarly, if the right and left operands of AND are both TRUE the entire expression is TRUE, otherwise it is FALSE. For example, TRUE & TRUE evaluates to TRUE, while TRUE & FALSE evaluates to FALSE.
+
+```{r}
+TRUE & TRUE
+```
+
+```{r}
+FALSE & TRUE
+```
+
+You can use the **&** operator to evaluate AND across a vector. The **&&** version of AND only evaluates the first memebr of a vector. Let's test both for practice. Type the expression TRUE & C(TRUE, FALSE, FALSE).
+
+```{r}
+TRUE & c(TRUE, FALSE, FALSE)
+```
+
+What happens in this case is that the left operand **TRUE** is recycled across every element in the vector of the right operand. This is the equilvalent statement as c(TRUE, TRUE, TRUE) & c(TRUE, FALSE, FALSE).
+
+Now type the same expression except use the **&&** operator.
+
+```{r}
+TRUE && c(TRUE, FALSE, FALSE)
+```
+
+In this case, the left operand is only evaluated with the first member of the right operand (the vector). The rest of the lements in the vector are not evaluated at all in this expression.
+
+The **OR** operator follows a similar set of rules. The '|' version of OR evaluates OR across the entire vector, while **||** evaluates the first member of a vector.
+
+An expression using the OR operator wille valuate to TRUE if the left operand or the right operand is TRUE. If both are TRUE, the expression wille valuate to TRUE, however if neither are TRUE, then the expression will be FALSE.
+
+Let's test out the vecorised version of the OR operator.
+
+```{r}
+TRUE | c(TRUE, FALSE, FALSE)
+```
+
+Now let's try out the non-vectorised version of the OR operator.
+
+```{r}
+TRUE || c(TRUE, FALSE, FALSE)
+```
+
+Logical opreators can be chained together just like arithmetic operators. The expressions: **6 != 10 && FALSE && 1 >= 2** or **TRUE || 5 < 9.3 || FALSE** are perfectly normal to see.
+
+As you may recall, arithmetic has an order of operations and so do logical expressions. All AND operators are evaluared before OR operators. Let's look at an example of an ambiguous case. Type 5 > 8 || 6 != 8 && 4 > 3.9.
+
+```{r}
+5 > 8 || 6 != 8 && 4 > 3.9
+```
+
+Let's walk through the order of oeprations in the above case. First the left and right operands of the AND operator are evaluated. 6 is not equal 8, 4 is greater than 3.9, therefore both oeprands are TRUE so resulting expression **TRUE && TRUE** evaluates to TRUE. Then the left operand of the OR operator is evaluated: 5 is not greater than 8, so the entire expression is reduced to FALSE || TRUE. Since the right operand of this expression iS TRUE, the entire expression evaluates to TRUE.
+
+```{r}
+TRUE && 62 < 62 && 44 >= 44
+```
+
+```{r}
+99.99 > 100 || 45 < 7.3 || 4 != 4.0
+```
+
+```{r}
+FALSE || TRUE && FALSE
+```
+
+```{r}
+TRUE && FALSE || 9 >= 4 && 3 < 6
+```
+
+```{r}
+6 >= -9 && !(6 > 7) && !(!TRUE)
+```
+
+```{r}
+!(8 > 4) ||  5 == 5.0 && 7.8 >= 7.79
+```
+
+```{r}
+FALSE && 6 >= 6 || 7 >= 8 || 50 <= 49.5
+```
+
+```{r}
+FALSE || TRUE && 6 != 4 || 9 > 4
+```
+
+Now that you are familiar with R's logical operators, you can take advantage of a few functions that R provides for dealing with logical expressions.
+
+The function **isTRUE()** takes on argument. If that argument evaluates to TRUE the function will return TRUE. Otherwise the function will return FALSE. Try using this function:
+
+```{r}
+isTRUE(6 > 4)
+```
+
+```{r}
+isTRUE(3)
+```
+
+```{r}
+!isTRUE(4 < 3)
+```
+
+```{r}
+isTRUE(!TRUE)
+```
+
+```{r}
+!isTRUE(8 != 5)
+```
+
+```{r}
+isTRUE(NA)
+```
+
+The function identical() will return TRUE if the two R objects passed into it as arguments are identical.
+
+```{r}
+identical('twins', 'twins')
+```
+
+You should also be aware of the xor() function, which takes two arguments. The xor() function stands for exclusive OR. If one argument evaluates to TRUE and one argument evaluates to FALSE, then this function will return TRUE, otherwise it will return FALSE.
+
+```{r}
+xor(5 == 6, !FALSE)
+```
+
+5 == 6 evalates to FALSE, !FALSE evaluates to TRUE, so xor(FALSE, TRUE) evaluates to TRUE. On the other hand if the first argument was 5 == 5, and the second argument was unchanged, then both arguments would have been TRUE, so xor(5 == 5, TRUE) would evaluate to FALSE.
+
+```{r}
+xor(!isTRUE(TRUE), 6 > -1)
+```
+
+```{r}
+xor(identical(xor, 'xor'), 7 == 7.0)
+```
+
+```{r}
+xor(4 >= 9, 8 != 8.0)
+```
+
+```{r}
+xor(!!TRUE, !!FALSE)
+```
+
+For the next few questions, we are going to need to create a vector of integers called ints. Create this vectory by typing: ints <- sample(10)
+
+```{r}
+ints <- sample(10)
+ints
+```
+
+The vector **ints** is a random sampling of integers from 1 to 10 without replacement. Let's say we wanted to ask some logical question about the contents of ints. If we type ints > 5 we will get a logical vector corresponding to if each element of ints is > 5.
+
+```{r}
+ints > 5
+```
+
+We can use the resulting logical vector to ask other questions about ints. The which() functon takes a logical vector as an argument and returns the indicies of the vector that are TRUE. For example, which(c(TRUE, FALSE, TRUE)) whould return the vector c(1, 3).
+
+Use the which() function to find the indicies of ints that are > 7.
+
+```{r}
+which(ints > 7)
+```
+
+Like the which() function, the functions any() and all() take logical vectors as their arguments. The any() function will return TRUE of one or more of the elements in the logical vector are TRUE. The all() function will return TRUE if every element in the logical vector is TRUE.
+
+```{r}
+any(ints < 0)
+```
+
+```{r}
+all(ints > 0)
+```
+
+

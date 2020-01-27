@@ -1,0 +1,161 @@
+---
+title: "Week 1- R Basics - Subsetting Vectors"
+author: "Sally Longmore"
+date: "22/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this lesson we will see how to extract elements from a vector based on some conditions that we specify.
+
+For example, we may only be interested in the first 20 elements of a vector, or only the elements that are not NA, or only those that are positive or correspond to a specific variable of interest. By the end of this lesson, you will know how to handle each of these scenarios.
+
+A vector call x has been created that contains a random ordering of 20 numers from a standard normal distribution and 20 NAs. Type x now to see what it looks like.
+
+```{r}
+x
+```
+
+The way you tell R that you want to select some particular elements (i.e. a 'subset') from a vector is by placing an 'index vector' in square brackets immediately following the name of the vector.
+
+For example:
+
+```{r}
+x[1:10]
+```
+
+Index vectors come in four different flavours, logical vectors, vectors of positive integers, vectors of negative integers, and vectors of character strings -- each of which we'll cover in this lesson.
+
+Let's start by indexing with logical vectors. One common scenario when working with real-world data is that we want to extract all elements of a vector that are not NA (i.e. missing data). Recall that is.na(x) yields a vector of logical values the same length as x, with TRUEs corresponding to NA values in x and FALSEs corresponding to non-NA values in x.
+
+What do you think x[is.na(x)] will give you?
+
+```{r}
+x[is.na(x)]
+```
+
+It will give you a vector of all NAs
+
+Recall that **!** is the logical expression NOT, so !is.na(x) can be read as **is not NA**. Therefore, if we want to create a vector called y that contains all of the non-NA values from x, we can use y <- x[!is.na(x)]. Give it a try.
+
+```{r}
+y <- x[!is.na(x)]
+y
+```
+
+Now we have a vector **y** that has isoloated the non-missing values of x, we can subset y as we please.  
+
+Recall that the expression y > 0 will give us a vector of logical values the same length as y, with TRUEs corresponding to values of y that are greater than zero and FALSEs corresponding to values of y that are less than or equal to zero. What do you think y[y > 0] will give you?
+
+```{r}
+y[y > 0]
+```
+
+A vector of all the positive elements of y.
+
+We could not use x[x > 0] because we would get a vector with elements containing including NAs as well as elements > 0.
+
+Combining our knowledge of logical operators with our new knowledge of subsetting, we could do this.
+
+```{r}
+x[!is.na(x) & x > 0]
+```
+
+In this case we request only the values of x that are both not NA and greater than zero.
+
+We have already looked at subsetting just the first 10 values **x[1:10]**. In this case we're providing a vector of positive integers inside of the square brackets, which tells R to return only the elements numbered 1 through 10.
+
+Many programming languages what's called 'zero-based indexing' where the first element is considered element 0. R uses 'one-based indexing' where the first element is 1.
+
+Can you figure out how we would subset the 3rd, 5th and 7th elements of x?
+
+```{r}
+x[c(3, 5, 7)]
+```
+
+It is important when using integer vectors to subset our vector x, we stick with the set of indexes {1, 2, ..., 40} since x only has 40 elements. What happens if we ask for the zero element of x?
+
+```{r}
+x[0]
+```
+
+As you might expect, we get nothing useful.
+
+R doesn't prevent us from doing this or asking for the 3000th element of a vector containing 40 elements.
+
+```{r}
+x[3000]
+```
+
+This time you get NA, because it doesn't exist.
+
+What if we are interested in all elements except the 2nd and 10th?
+
+We can do this by using the -2 and -10 in the element list.
+
+```{r}
+x[c(-2, -10)]
+```
+
+A shorthand way of specifying multiple negative numbers is to put a negative sign out the front of the vector of positive numbers.
+
+```{r}
+x[-c(2, 10)]
+```
+
+So far we have covered three types of index vectors, logical, positive integer and negative integer. The only remaining type requires us to introduce the concept of *named* elements.
+
+Create a numeric vector with three named elements using vect <- c(foo = 11, bar = 2, norf = NA).
+
+```{r}
+vect <- c(foo = 11, bar = 2, norf = NA)
+```
+
+When we print vect to the console, you will see that each element has a name.
+
+```{r}
+vect
+```
+
+We can also get the names of vect by passing vect as an argument to the names() function.
+
+```{r}
+names(vect)
+```
+
+Alternatively, we can create an unnamed vector vect2 with c(11, 2, NA)
+
+```{r}
+vect2 <- c(11, 2, NA)
+```
+
+Then we can add the *names* attribute to vect2 after the fact with names(vect2) <- c("foo", "bar", "norf").
+
+```{r}
+names(vect2) <- c("foo", "bar", "norf")
+```
+
+Now, let's check that vect and vect2 are the same by passing them as arguments to the identical() function.
+
+```{r}
+identical(vect, vect2)
+```
+
+Indeed, vect and vect2 are identical named vectors.
+
+With named vectors, we can select a vector using the name of the vector.
+
+```{r}
+vect["bar"]
+```
+
+Likewise, we can specify a vector names with vect[c("foo", "bar")]
+
+```{r}
+vect[c("foo", "bar")]
+```
+
+Now you know all four methods of subsetting data from vectors. Different approaches are best in different scenarios and when in doubt, try it out!

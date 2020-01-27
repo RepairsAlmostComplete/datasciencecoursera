@@ -1,0 +1,275 @@
+---
+title: "Week 1 - QUiz"
+author: "Sally Longmore"
+date: "19/01/2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Qustion 1 - 10
+### 1. (Ver A) The R language is a dialect of which of the following programming languages?
+
+- S
+
+### 1. (Ver B) R was developed by statisticians working at
+- The University of Auckland
+
+### 2. The definition of free software consist of four freedoms (freedoms 0 through 3). Which of the following is not one of the freedoms that are part of the definition? Select all that apply
+- **The freedom to prevent users from using the software for undesirable purposes**
+- **The freedom to restrict access the source code**
+- The freedom to run the program for any purpose
+- The freedom to redistribute copies so you can help your neighbour
+- The freedom to improve the program, and release your improvements to the public, so that the whole community benefits
+- The freedom to study how the program works, and adapt it to your needs
+- **The freedom to sell the software for any price.**
+
+### 3. In R the following are all atomic data types EXCEPT: (Select all that apply)
+- **array**
+- numeric
+- **data frame**
+- **martrix**
+- integer
+- complex
+- **list**
+- **table**
+- character
+- logical
+
+### 4. (Ver A) If I execute the expression x <- 4L in R, what is the class of the object 'x' as determined by the class() function?
+- integer  
+*the 'L' suffix creates an integer vector as opposed to a numeric vector*
+
+```{r}
+x <- 4L;
+class(x)
+```
+
+### 4. (Ver B) If I execute the expression x <- 4 in R, what is the class of the object 'x' as determined by the class() function?
+- numeric  
+
+```{r}
+x <- 4;
+class(x)
+```
+
+### 5. (Ver A) What is the class of the object defined by the expression x <- c(4, "a", TRUE)?
+- character  
+*The character class is the "lowest common denominator" here and so all elements will be coerced into that class*
+
+```{r}
+x <- c(4, "a", TRUE);
+class(x)
+```
+
+### 5. (Ver B) What is the class of the object defined by the expression x <- c(4, TRUE)?
+- numeric  
+*The numeric class is the "lowest common denominator" here and so all elements will be coerced into that class*
+
+```{r}
+x <- c(4, TRUE);
+class(x)
+```
+
+
+### 6. (Ver A) If I have two vectors x <- c(1, 3, 4) and y <- c(3, 2, 10), what is produced by the expression rbind(x, y)?
+- a matrix with two rows and three columns  
+*The 'rbind' function treats vectors as if they were rows of a matrix. It then takes those vectors and binds them together row-wise to create a matrix*
+
+```{r}
+x <- c(1, 3, 4);
+y <- c(3, 2, 10);
+rbind(x, y)
+```
+
+### 6. (Ver B) If I have two vectors x <- c(1, 3, 5) and y <- c(3, 2, 10), what is produced by the expression cbind(x, y)?
+- a matrix with two2 columns and 3 rows  
+*The 'cbind' function treats vectors as if they were columns of a matrix. It then takes those vectors and binds them together column-wise to create a matrix*
+
+```{r}
+x <- c(1, 3, 5);
+y <- c(3, 2, 10);
+cbind(x, y)
+```
+
+
+### 7. A key property of vectors in R is that
+- elements of a vector all must be the same class
+
+### 8. (Ver A) Suppose I have a list defined as x <- list(2, "a", "b", TRUE). What does x[[2]] give me? Select all that apply.
+- a character vector of length 1
+- a character vector containing the letter "a"
+
+```{r}
+x <- list(2, "a", "b", TRUE);
+x[[2]]
+class(x[[2]])
+```
+
+### 8. (Ver B) Suppose I have a list defined as x <- list(2, "a", "b", TRUE). What does x[[1]] give me? Select all that apply.
+- a numeric vector of length 1
+- a numeric vector containing the element 2
+
+```{r}
+x <- list(2, "a", "b", TRUE);
+x[[1]]
+class(x[[1]])
+```
+
+### 9. Suppose I have a vector x <- 1:4 and a vector y <- 2. What is produced by the expression x + y?
+- A numeric vector with elements 3, 4, 5, 6
+
+```{r}
+x <- 1:4;
+y <- 2;
+z = x + y
+z
+class(z)
+```
+
+### 10. Suppose I have a vector x <- c(3, 5, 1, 10, 12, 6) and I want to set all elements of this vector that are less than 6 to be equal to zero. What R code achieves this? Select all that apply.
+- x[x <= 5] <- 0
+*You can create a logical vector with the expression x <= 5 and then use the [ operator to subset the original vector x*
+
+```{r}
+x <- c(3, 5, 1, 10, 12, 6);
+x[x <= 5] <- 0;
+x
+```
+
+- x[x %in% 1:5] <- 0  
+*You can create a logical vector with the expression x %in% 1:5 and then use the [ operator to subset the original vector x*
+
+```{r}
+x <- c(3, 5, 1, 10, 12, 6);
+x[x %in% 1:5] <- 0;
+x
+```
+
+- x[x < 6] <- 0  
+*you can create a logical vector with the expression x < 6 and then use the [ operator to subset the original vector x*
+
+```{r}
+x <- c(3, 5, 1, 10, 12, 6);
+x[x < 6] <- 0;
+x
+```
+
+## Question 11 - 20
+### For questions 11 - 20 use the provided dataset
+
+Load the dataset first
+```{r}
+week1 <- read.csv("hw1_data.csv")
+```
+
+### 11. In the dataset provided for this quiz, what are the columns for the dataset?
+
+We need to extract the header info using **names()**
+
+```{r}
+names(week1)
+```
+
+### 12. Extract the first 2 rows of the data frame and print them to the console. What does the output look like?
+
+We need to use the **[** operator to get a subset of the data frame
+
+```{r}
+week1[1:2, ]
+```
+
+### 13. How many observations (i.e. rows) are in this dataframe?
+
+We need to use the **nrow()** function to compute the number of rows in the data frame
+
+```{r}
+nrow(week1)
+```
+
+### 14. Extract the last 2 tows of the data frame and print them to the console
+
+We can use the **tail()** function to select rows from the end of the data frame working backward
+
+```{r}
+tail(week1, 2)
+```
+
+### 15. What is the value of Ozone in the 47th row?
+
+We can use the **[** operator to select a subset of the data frame
+
+```{r}
+week1[47, "Ozone"]
+```
+
+### 16. How many missing values are in the Ozone column of this data frame?
+
+We can use the **is.na()** function to test for missing values.
+We can then remove the FALSE values using na.rm 
+```{r}
+bad = is.na(week1[, "Ozone"]);
+sum(bad, na.rm = TRUE)
+```
+
+### 17. What is the mean of the Ozone column in this data frame? Excluding missing values (coded as NA) from this calculation?
+
+We fist need to remove the missing values, we can do this using the **complete.cases** function, we need to also use the **[** operator here to insure that we only remove rows where the NA value is in the *Ozone* column.
+We then need to use the **mean** command to calculate the mean. In that command we need to ensure that we are only including the rows that have complete data, and that we only include the *Ozone* column.
+
+```{r}
+good <- complete.cases(week1[, "Ozone"]);
+mean(week1[good, "Ozone"])
+```
+
+### 18. Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90. What is the mean of Solar.R in this subset?
+
+See in code comments.
+
+```{r}
+Ozone <- 31;
+Temp <- 90;
+## First select only the Ozone and Temp columns
+sel <- week1[, c("Ozone", "Temp", "Solar.R")];
+## Remove NA's
+selComp <- complete.cases(sel);
+sel <- sel[selComp, ];
+## Select rows where Ozone > 31
+selOzone <- sel["Ozone"] > Ozone;
+sel <- sel[selOzone, ];
+## Select rows where Temp > 90
+selTemp <- sel["Temp"] > Temp;
+sel <- sel[selTemp, ];
+## Get the mean of Solar.R from the selected rows
+mean(sel[, "Solar.R"])
+```
+
+### 19. What is the mean of "Temp" when "Month" is equal 6.
+
+```{r}
+selMonth <- 6;
+## First select only the rows that are Month 6
+sel <- week1["Month"] == selMonth;
+sel <- week1[sel, ];
+## Get the mean of Temp
+mean(sel[, "Temp"])
+```
+
+### 20. What was the maximum ozone value in the month of May (i.e. Month is equal to 5)?
+
+```{r}
+selMonth <- 5;
+## First select only the rows that are Month 6
+sel <- week1["Month"] == selMonth;
+sel <- week1[sel, "Ozone"];
+## Remove NA's
+selComp <- complete.cases(sel);
+sel <- sel[selComp];
+## Get the max value of Ozone
+max(sel)
+```
+

@@ -1,0 +1,100 @@
+---
+title: "Week 1 - R Basics - Sequences of Numbers"
+author: "Sally Longmore"
+date: "22/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The simplest way to create a sequence of numbers in R is by using the colon ":" operator.
+
+```{r}
+1:20
+```
+We can also use it to create a sequence of real numbers, for example pi:10
+
+```{r}
+pi:10
+```
+
+The result is a vector of real numbers starting with pi (3.142...) and increasing in increments of 1.  
+The upper limit of 10 is never reached, since the next number in our sequence would be greater than 10.
+
+What happens if we do 15:1?
+
+```{r}
+15:1
+```
+
+It creates a vector from 15 to 1 in increments of 1
+
+To get help on an operator such as ":", you must enclose the operator in back tick like this **`:`**
+
+If you want more control creating a sequence of numbers you can use the seq() function. The most basic operation of the seq() function is the same as that of the ":" operator
+
+```{r}
+seq(1, 20)
+```
+
+This gives us a sequence between 1 and 20 with intervals of 1
+
+No if we want to change the interval between numbers in the sequence, we can use seq() to do that
+
+```{r}
+seq(0, 10, by=0.5)
+```
+
+Lets say we want a sequence of 30 numbers equally spaced between 5 and 10, we can do this with seq()
+
+```{r}
+my_seq <- seq(5, 10, length=30)
+my_seq
+```
+
+To confirm the lenght of my_seq use the lenght() function
+
+```{r}
+length(my_seq)
+```
+
+Lets say we want to generate a sequence of integers from 1 to N, where N represetns the length of my_seq vector
+
+'
+```{r}
+1:length(my_seq)
+```
+
+Or we can use seq()
+
+```{r}
+seq(along.with = my_seq)
+```
+
+R also has a built in function for this purpose as well called seq_along()
+
+```{r}
+seq_along(my_seq)
+```
+
+One more function for creating a sequence of numbers if rep(), which stands for **replicate**.
+
+If we want to create a vector that contains 40 zeros, we can use
+
+```{r}
+rep(0, times = 40)
+```
+
+If instead we want to our vector to contain 10 repetitions of the vector (0, 1, 2) we can use a vector instead of the number.
+
+```{r}
+rep(c(0, 1, 2), times = 10)
+```
+
+What if we want a vector that contains 10 zeros, 10 ones and 10 twos. We can do this with the each argument instead of times.
+
+```{r}
+rep(c(0, 1, 2), each = 10)
+```

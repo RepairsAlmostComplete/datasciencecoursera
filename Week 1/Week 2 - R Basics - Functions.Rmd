@@ -1,0 +1,305 @@
+---
+title: "Week 2 - R Basics - Functions"
+author: "Sally Longmore"
+date: "23/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Functions are one of the fundamental building blocks of the R language. They are small pieces of reusable code that can be treated like any other object in R.
+
+If you have worked through any other part of this course, you've probably used some functions already. Functions are usually characterised by name of the function followed by parentheses.
+
+Let's try using a few basic functions just for fun. The Sys.Data() function returns a string representing today's date. Type Sys.Date() and see what happens.
+
+```{r}
+Sys.Date()
+```
+
+Most functions in R return a value. Functions like Sys.Date() return a value based on your computer's environment, while other functions manipulate input data in order to compute a return value.
+
+The mean() function takes a vector of numbers as input, and returns the average of all the numbers in the input vector. Inputs to functions are often called arguments. Providing arguments to a function is also sometimes called passing arguments to that function. Arguments you want to pass to a function go inside the function's parentheses. Try passing the argument c(2, 4, 5) to the mean() function.
+
+```{r}
+mean(c(2, 4, 5))
+```
+
+Functions usually take arguments which are variables that the function operates on. For example, the mean() function takes a vector as an argument, like in the case of mean((2, 6, 8)).  The mean() function then adds up all of the numbers in the vector and divides that sum by the length of the vector.
+
+In the following question you will be asked to modify a script that will appear as soon as you move on from this question. When you have finished modifying the script, save your changes to the script and type submit() and the script will be evaluated. There will be some comments in the script that opens up, so be sure to read them!.
+
+The last expression evaluated in a function will become the return value of that function. We want this function to take one argument, x, and return x without modifying it. Delete the pound sign so that x is returned without any modification.
+
+```{r}
+
+boring_function <- function(x) {
+  x
+}
+
+```
+
+Now lets test the function
+
+'
+```{r}
+boring_function('My first function!')
+```
+
+In R:  
+
+Everything that exits is an object  
+Everything that happens is a function call  
+
+If you want to see the source code for any function, just type the function name without any arguments or parentheses.
+
+'
+```{r}
+boring_function
+```
+
+We are going to replciate the functionality of the mean() function by creating a function called my_mean(). Remember that to calculate the average of all the numbers in a vector you find the sum of all the numbers in the vector and divide that sum by the number of elements in the vector.
+
+```{r}
+my_mean <- function(my_vector) {
+  sum(my_vector) / length(my_vector)
+}
+```
+
+Now we can run that function
+
+```{r}
+my_mean(c(4, 5, 10))
+```
+
+Next, let's try writing a function with default arguments. You can set default values for a functions arguments, and this can be useful if you think someone who uses your function will set certain arguments to the same value most of the time.
+
+```{r}
+remainder <- function(num, divisor = 2) {
+  
+  num %% divisor
+}
+
+```
+
+When we set the value of an argument in the function() section, this sets the default value. This value will be used if no value is specified for that argument.
+
+Let's test the function.
+
+```{r}
+remainder(5)
+```
+
+You provided one argument to the function, and R matched that argument to **num** since **num** was the first argument. The default value for **divisor** was set to 2, so the function used the default value you provided.
+
+Now lets test the remainder function by providing two arguments.
+
+```{r}
+remainder(11, 5)
+```
+
+Once again, the arguments have been matched appropriately.
+
+You can also explicitly specify arguments in a function. When you explicitly designate argument values by name, the ordering of the arguments becomes unimportant.
+
+```{r}
+remainder(divisor = 11, num = 5)
+```
+
+R can also partially match arguments, e.g.
+
+```{r}
+remainder(4, div = 2)
+```
+
+In general, you want to make your code as easy to understand as possible. Switching around the order of arguments can be confusing.
+
+We can see a functions arguments by using the args() function.
+
+```{r}
+args(remainder)
+```
+Args is also a function, and remainder was an argument for the function args(). You can pass functions to other functions as arguments.
+
+The following function will take a function as an argument **func**, and pass the arugment **dat** to the function argument **func**, evaluating the function and returning the result.
+
+```{r}
+evaluate <- function(func, dat){
+  func(dat)
+}
+```
+
+We can try it now by finding the standard deviation of c(1.4, 3.6, 7.9, 8.8).
+
+```{r}
+evaluate(sd, c(1.4, 3.6, 7.9, 8.8))
+```
+
+The idea of passing functions as arguments to other functions is an important and fundamental concept in programming.
+
+You may be surprised to learn that you can pass a function as an argument without first defining the passed function. Functions that are not named are appropriately known as anonymous functions.
+
+Let's use the evaluate function to explore anonymous functions. For the first argument of the evaluate function we are going to write a tiny function that fits on one line. In the second argument, we will pass some data to the time anonymous function in the first argument.
+
+```{r}
+evaluate(function(x){x+1}, 6)
+```
+
+The first argument is a tiny anonymous function that takes one argument **x** and returns **x + 1**. We then passed the number 6 into this function so the entire expression evaluates to 7.
+
+Try using evaluate() along with an anonymous function to return the first element of the vector c(8, 4, 0). Your anonymous function should only take one argument which should be a variable x.
+
+```{r}
+evaluate(function(x){x[1]}, c(8, 4, 0))
+```
+
+Now try using evaluate() along with an anonymous function to return the last element of the vector c(8, 4, 0). You anonymous function should only take one argument which should be a variable x.
+
+```{r}
+evaluate(function(x){x[length(x)]}, c(8, 4, 0))
+```
+
+For the rest of the course we are going to use the paste() function frequently.
+
+As you can see from the paste help, the first argument of paste() is '...' which is referred to as an ellipsis or simply dot dot dot. The ellipsis allows an indefinite number of argumetns to be passed into a function. In the case of paste(), any number of strings can be passed as arguments and paste() will return all of the strings combined into a single string with spaces in between. Kind of like concatenating a string but with spaces inserted.
+
+```{r}
+paste("Programming", "is", "fun!")
+```
+
+The ellipses can be used to pass on arguments to other functions that are
+used within the function you're writing. Usually a function that has the
+ellipses as an argument has the ellipses as the last argument. The usage of
+such a function would look like:
+
+ellipses_func(arg1, arg2 = TRUE, ...)
+
+In the above example arg1 has no default value, so a value must be provided
+for arg1. arg2 has a default value, and other arguments can come after arg2
+depending on how they're defined in the ellipses_func() documentation.
+Interestingly the usage for the paste function is as follows:
+
+paste (..., sep = " ", collapse = NULL)
+
+Notice that the ellipses is the first argument, and all other arguments after
+the ellipses have default values. This is a strict rule in R programming: all
+arguments after an ellipses must have default values. Take a look at the
+simon_says function below:
+
+simon_says <- function(...){
+   paste("Simon says:", ...)
+}
+
+The simon_says function works just like the paste function, except the
+begining of every string is prepended by the string "Simon says:"
+
+Telegrams used to be peppered with the words START and STOP in order to
+demarcate the beginning and end of sentences. Write a function below called 
+telegram that formats sentences for telegrams.
+For example the expression `telegram("Good", "morning")` should evaluate to:
+"START Good morning STOP"
+
+```{r}
+telegram <- function(...){
+  paste("START", ..., "STOP")
+}
+```
+
+Lets test that function.
+
+```{r}
+telegram("Well", "that", "was", "weird")
+```
+
+Let's explore how to "unpack" arguments from an ellipses when you use the
+ellipses as an argument in a function. Below I have an example function that
+is supposed to add two explicitly named arguments called alpha and beta.
+
+add_alpha_and_beta <- function(...){
+ # First we must capture the ellipsis inside of a list
+ # and then assign the list to a variable. Let's name this
+ # variable `args`.
+ args <- list(...)
+ # We're now going to assume that there are two named arguments within args
+ # with the names `alpha` and `beta.` We can extract named arguments from
+ # the args list by using the name of the argument and double brackets. The
+ # `args` variable is just a regular list after all!
+ 
+ alpha <- args[["alpha"]]
+ beta  <- args[["beta"]]
+ # Then we return the sum of alpha and beta.
+ alpha + beta 
+}
+
+Have you ever played Mad Libs before? The function below will construct a
+sentence from parts of speech that you provide as arguments. We'll write most
+of the function, but you'll need to unpack the appropriate arguments from the
+ellipses.
+
+```{r}
+mad_libs <- function(...){
+  args <- list(...) ## Capture the args
+  
+  place <- args[["place"]]
+  adjective <- args[["adjective"]]
+  noun <- args[["noun"]]
+  
+  # Do your argument unpacking here!
+  
+  # Don't modify any code below this comment.
+  # Notice the variables you'll need to create in order for the code below to
+  # be functional!
+  paste("News from", place, "today where", adjective, "students took to the streets in protest of the new", noun, "being installed on campus.")
+}
+
+```
+
+Lets test the function out.
+
+```{r}
+mad_libs(place = "Mars", adjective = "quick", noun = "there")
+```
+
+You're familiar with adding, subtracting, multiplying and dividing numbers in R. To do this you use the +, -, *, and / sybols. These symbols are called binary operators because they take two inputs, an input from the left and an input from the right.
+
+In R you can define your own binary operators. In the next script I'll show you how.
+
+The syntax for creating new binary operators in R is unlike anything else in
+R, but it allows you to define a new syntax for your function. I would only
+recommend making your own binary operator if you plan on using it often!
+
+User-defined binary operators have the following syntax:
+    %[whatever]% 
+where [whatever] represents any valid variable name.
+
+Let's say I wanted to define a binary operator that multiplied two numbers and
+then added one to the product. An implementation of that operator is below:
+
+"%mult_add_one%" <- function(left, right){ # Notice the quotation marks!
+   left * right + 1
+}
+
+I could then use this binary operator like `4 %mult_add_one% 5` which would
+evaluate to 21.
+
+Write your own binary operator below from absolute scratch! Your binary
+operator must be called %p% so that the expression:
+
+       "Good" %p% "job!"
+
+ will evaluate to: "Good job!"
+ 
+```{r}
+"%p%" <- function(left, right){ # Remember to add arguments!
+  paste(left, right)
+}
+```
+ 
+Now lets test it.
+
+```{r}
+'I' %p% 'love' %p% 'R!'
+```
+

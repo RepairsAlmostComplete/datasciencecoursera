@@ -1,0 +1,124 @@
+---
+title: "Week 1 - R Basics - File Operations"
+author: "Sally Longmore"
+date: "21/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## File Operations
+
+Get the current working directory
+
+```{r}
+getwd()
+```
+
+List the objects in the current workspace
+
+```{r}
+ls()
+```
+
+List all the files in your current working directory
+
+```{r}
+list.files()
+```
+
+or you can use dir()
+
+```{r}
+dir()
+```
+
+You can use the args() function to determine the arguments to a function, for example
+
+```{r}
+args(list.files)
+```
+
+You can use dir.create() to create a new directory
+
+```{r}
+dir.create("testdir")
+```
+
+You can set the working directory using setwd()
+
+```{r}
+setwd("testdir")
+```
+
+You can create files using file.create()
+
+```{r}
+file.create("mytest.R")
+```
+
+You can check if a file exists by using file.exists()
+
+```{r}
+file.exists("mytest.R")
+```
+
+You can check the file information by using file.info()
+
+```{r}
+file.info("mytest.R")
+```
+
+You can also use the $ operator to grab specific items, for example the mode
+
+```{r}
+file.info("mytest.R")$mode
+```
+
+You can rename files using file.rename()
+
+```{r}
+file.rename("mytest.R", "mytest2.R")
+```
+
+You can copy a file by using file.copy()
+
+```{r}
+file.copy("mytest2.R", "mytest3.R")
+```
+
+
+You can delete files using file.remove()
+
+```{r}
+file.remove("mytest3.R")
+```
+
+You can get the relative path using file.path()
+
+```{r}
+file.path("mytest3.R")
+```
+
+You can pass folders into path to generate OS independent paths
+
+```{r}
+file.path("folder1", "folder2")
+```
+
+You can use dir.create() to make folders, but it will fail if parent folders do not exist.  
+To overcome this, you can set the argument **recusrive** to **TRUE** and it will create the entire folder structure.
+
+```{r}
+dir.create(file.path("testdir2", "testdir3"), recursive = TRUE)
+```
+
+Go back to the original working directory we stored in the variable old.dir
+
+```{r}
+setwd(old.dir)
+```
+
+

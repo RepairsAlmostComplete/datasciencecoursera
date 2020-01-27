@@ -1,0 +1,126 @@
+---
+title: "Week 1 - R Basics - Vectors"
+author: "Sally Longmore"
+date: "22/01/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The simplest and most common data structure in R is the vector.
+
+Vectors come in two different flavours  
+- atomic vectors: Contains exactly one datatype
+- lists: Contains multiple data types
+
+Atomic vectors can include only one datatype, but that datatype can include
+- logical
+- character
+- integer
+- complex
+
+Logical vectors contain the values TRUE, FALSE and NA (for 'not available'. These values are generated as the result of logical 'conditions'.
+
+Create a numeric vector that contains the values 0.5, 55, -10 and 6 and assign it to the variable name num_vect
+
+```{r}
+num_vect <- c(0.5, 55, -10, 6)
+```
+
+Now create a variable called tf that gets the result of num_vect < 1.
+
+```{r}
+tf <- num_vect < 1
+tf
+```
+
+This returns a vector of logical values indicating which elements are less than 1
+
+The statement num_vect < 1 is a condition and tf fells us whether wach corresponding element of our numeric vector num_vect satisifies this condition.
+
+The frist element of num_vect is 0.5, which is less than 1 and therefore the statement 0.5 < 1 is TRUE.  
+The second element of num_vect is 55, which is greater than 1, so the statement 55 < 1 is FALSE.  
+The same logic applies to the third and fourth elements.
+
+Lets try num_vect >= 6 without assigning to a new variable
+
+```{r}
+num_vect >= 6
+```
+
+In this example we are checking if each element is greater than or equal to 6.  
+Since only 55 and 6 are greater than or equal to 6, only the second and fourth elements are TRUE, the rest are FALSE.
+
+The **<**, **>**, **==**, **<=**, **>=** and **!=** are logical operators.  
+
+We can have two logical expressions by using the **OR** operator **|** which is the pipe and the **AND** operator which is the ampersand.  
+
+Lastly, ! is the negation of the expression and is TRUE when A is FALSE.
+
+```{r}
+(3 > 5) & (4 == 4)
+(TRUE == TRUE) | (TRUE == FALSE)
+((111 >= 111) | !(TRUE)) & ((4 + 1) == 5)
+```
+
+## Character Vectors
+Character vectors use double quotes **"** to distinguish character objects.
+
+Create a character vector that contains the following words: "My", "name", "is".
+
+```{r}
+my_char <- c("My", "name", "is")
+my_char
+```
+
+my_char is a character vector with a lenght of 3.  
+
+We can join the elements of my_char together in one continous string using the paste() function. The example below will join the elements using a space in between.
+
+```{r}
+paste(my_char, collapse = " ")
+```
+
+We can concatenate to my_char using the c() function like this
+
+```{r}
+my_name <- c(my_char, "Sally")
+my_name
+```
+
+Now if we use the paste() function we can join the works in my_name together.
+
+```{r}
+paste(my_name, collapse = " ")
+```
+
+Paste can also joing character vectors that are lenght of 1.
+
+```{r}
+paste("Hello", "world!", sep = " ")
+```
+
+For a slightly more compleicated exmaple, we can join two vectors, each of length 3. Use paste() to join the integer vector 1:3 with the character vector "X", "Y", "Z" using a seperator of "". This will joing each of the elements in the vectors, and return a character vector of lenght 3.
+
+'
+```{r}
+paste(1:3, c("X", "Y", "Z"), sep = "")
+```
+
+## Vector Recycling
+
+When concatenating vectors of different lenghts it is called vector recycling. The shorter vector will be reused or recycled. LETTERS is a predefined variable in R containing a character vector of all 26 characters in the english alphabet.
+
+```{r}
+paste(LETTERS, 1:4, sep = "-")
+```
+
+Since the character vector LETTERS is longer than the numeric vector 1:4, R simply recycles the numeric vector until it matches the length of the character vector LETTERS.  
+
+It is also worth nothing that the numeric vector 1:4 get 'coerced' into a character vector by the paste() function.
+
+

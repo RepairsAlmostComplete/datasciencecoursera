@@ -1,0 +1,23 @@
+---
+title: "Week 1 - Swirl"
+author: "Sally Longmore"
+date: "21/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Load the swirl library
+
+```{r}
+library(swirl)
+```
+
+### Install the R Programming Course
+```{r}
+install_from_swirl("R Programming")
+```
+
+

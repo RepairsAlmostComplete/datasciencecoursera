@@ -1,0 +1,95 @@
+---
+title: "Week 1 - R Basics - Missing Values"
+author: "Sally Longmore"
+date: "22/01/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Missing values play an important role in statisitcs and data analysis. Often, missing values must not be ignored, but rather they should be carefully studied to see if there is an underlying pattern or cause to their missingness.  
+
+In R, NA is used to represent any value that is 'ot available' or 'missing' (in the statistical sense).  
+
+In this lesson, we'll explore missing values further.
+
+Any operation involving NA generally yields NA as the result. To illustrate, let's create a vector c(44, NA, 5, NA) and assign it to a variable x.
+
+```{r}
+x <- c(44, NA, 5, NA)
+```
+
+Now, let's multiple x by 3.
+
+```{r}
+x * 3
+```
+
+Notice that the elements of the resulting vector that correspond with the NA values in x are still NA.
+
+To make things a little more interesting, lets create a vector containing 100 draws from a standard normal distribution with y <- rnorm(1000).
+
+```{r}
+y <- rnorm(1000)
+```
+
+Now lets create a vector containing 1000 NA's with z <- rep(NA, 1000).
+
+```{r}
+z <- rep(NA, 1000)
+```
+
+Finally, let's select 100 elements at random from these 2000 values (combining y and z) such that we don't know how many NAs we'll wind up with or what positions they'll occupy in our final vector.
+
+```{r}
+my_data <- sample(c(y, z), 100)
+```
+
+Let's first ask the question of where our NAs are located in our data. The **is.na()** function tells us whether each element of a vector is NA. Call is.na() on my_data and assign the result to my_na.
+
+```{r}
+my_na <- is.na(my_data)
+my_na
+```
+
+Everywhere you see a TRUE there is an emelent with the value of NA. Where you see a FALSE, there is an element that is not NA and was drawn from the standard normal distribution.
+
+You might thin that my_data == NA yields the same result as is.na(), but it doesn't.
+
+```{r}
+my_data == NA
+```
+
+The reason that you get a vector of all NAs is that NA is not really a value, but just a placeholder for a quantity that is not avialable. Therefore, the logical expression is incomplete and R has no choice but to return a vector of the same length as my_data that contains all NA's.  
+
+The key takeaway is to be cautious when using logical expressions anytime NAs might creep in, since a single NA value can derail the entire thing.  
+
+Now that we have a vector, my_na, that has a TRUE for every NA and FALSE for every numeric value, we can compute the total nubmer of NAs in our data.
+
+The trick is to recognise that underneath the surface, R represents TRUE as the numer 1 and FALSE as the numer 0. Therefore, if we take the sum of a bunch of TRUEs and FALSES, we get the toal number of TRUEs.
+
+```{r}
+sum(my_na)
+```
+
+Finally, lets take a look at the data to convince ourselves that everything adds up.
+
+```{r}
+my_data
+```
+
+Now that we have got NAs down pat, let's look at a second type of missing value, **NAN**, which stands for **not a number**. To generate NaN, try dividing 0 by 0.
+
+'
+```{r}
+0 / 0
+```
+
+In R, **Inf** stands for infinity. What happens if you subtract Inf from Inf?
+
+```{r}
+Inf - Inf
+```
+
