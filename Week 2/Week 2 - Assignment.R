@@ -1,4 +1,4 @@
-# **** Week 2 - Programming Assignment ****
+ # **** Week 2 - Programming Assignment ****
 #
 # Using the specdata.zip file. Each csv file in this zip file has the following
 # columns:
@@ -6,8 +6,8 @@
 #
 # The format/unit for each column is:
 # Date: YYYY-MM-DD
-# sulfate: µg/m^3
-# nitrate: µg/m^3
+# sulfate: ?g/m^3
+# nitrate: ?g/m^3
 # ID: ID Number of the monitoring station
 #
 # Each CSV file contains data for one station
@@ -66,6 +66,8 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
         
         ## Add pollutant values to the pollVals vector
         pollVals <- c(pollVals, reqPoll);
+        
+        ##
     }
     
     ## Finally, we need to calculate the overall mean for the requested stations
@@ -116,5 +118,55 @@ complete <- function(directory, id = 1:332) {
     compEntries
 }
 
+# Write a function that takes a directory of data files and a threshold of
+# complete cases and calculates the correlation between sulfate and nitrate for
+# monitor locations where the number of completely observerd cases
+# (on all variables) is greater than the threshold.
+#
+# The function should return a vector of correlations for the monitors that meet
+# the threshold requirement.
+#
+# If no monitors meet the threshold requirement, then the function should
+# return a numeric vector of length 0.
+
+corr <- function(directory, threshold = 0) {
+    ## ' directory' is a character vector of lenght 1 indicating the location
+    ## of the CSV files
+    ##
+    ## 'threshold' is a numeric vector of length 1 indicating the number of
+    ## completely observed observations (on all variables) required to compute
+    ## the correlation between nitrate and sulfate; the default is 0
+    ##
+    ## Return a numeric vector of correlations
+    ## NOTE: Do not round the result!!
+
+    ## Get a list of complete entries in each file
+    compMons <- complete("specdata");
+    
+    ## Remove stations that do not meet the threshold, and return id's that
+    ## meet the threshold
+    goodMons <- compMons["nobs"] > threshold;
+    goodMons <- compMons[goodMons, "id"];
+    
+    ## Create an output vector
+    corVals <- vector(mode="numeric", length = 0);
+    
+    ## Iterate through each of the goodMons and calculate the correlation
+    ## between sulfate and nitrate
+    for (currID in goodMons) {
+        ## Load the CSV file
+        csvName <- paste(directory, "/", leadZeros(currID, 3), ".csv", sep = "");
+        pollData <- read.csv(csvName, header = TRUE, sep = ",");
+        
+        ## Calculate the correlation between sulfate and nitrate
+        corID <- cor(pollData["sulfate"], pollData["nitrate"], use = "complete.obs");
+        
+        ## Add data to the output vector
+        corVals <- c(corVals, corID[1,1]);
+    }
+    
+    corVals
+}
+
 ## DEBUG
-complete("specdata", 1:10)
+corr("specdata", 150)
