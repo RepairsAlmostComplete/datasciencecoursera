@@ -1,0 +1,80 @@
+---
+title: "Week 4 - Assignment 3 - Quiz - Attempt 1"
+author: "Sally Longmore"
+date: "02/02/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+source("best.r")
+source("rankhospital.r")
+source("rankall.r")
+```
+
+Question 1. What was the result returned by the following code?
+
+```{r}
+best("SC", "heart attack")
+```
+
+Quetion 2. What result is returned by the following code?
+
+```{r}
+best("NY", "pneumonia")
+```
+
+Question 3. What result is returned by the following code?
+
+```{r}
+best("AK", "pneumonia")
+```
+
+Question 4. What result is returned by the following code?
+
+```{r}
+rankhospital("NC", "heart attack", "worst")
+```
+
+Question 5. What result is returned by the following code?
+
+```{r}
+rankhospital("WA", "heart attack", 7)
+```
+
+Question 6. What result is returned by the following code?
+
+```{r}
+rankhospital("TX", "pneumonia", 10)
+```
+
+Question 7. What result is returned by the following code?
+
+```{r}
+rankhospital("NY", "heart attack", 7)
+```
+
+Question 8. What result is returned by the following code?
+
+```{r}
+r <- rankall("heart attack", 4)
+as.character(subset(r, state == "HI")$hospital)
+```
+
+Question 9. What result is returned by the following code?
+
+```{r}
+r <- rankall("pneumonia", "worst")
+as.character(subset(r, state == "NJ")$hospital)
+```
+
+Question 10. What result is returned by the following code?
+
+```{r}
+r <- rankall("heart failure", 10)
+as.character(subset(r, state == "NV")$hospital)
+```
+
