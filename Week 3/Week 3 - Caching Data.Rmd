@@ -1,0 +1,101 @@
+---
+title: "Week 3 - Caching Data"
+author: "Sally Longmore"
+date: "30/01/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 
+
+
+In this example we introduce the <<- operatior which can be used to assign
+a value to an object in an environment that is different from the current
+environment. Below are two functons that are used to create a special object
+that stores a numeric vector and cache's its mean.
+
+The first function, makeVector creates a special "vector", which is really a
+list containing a function to
+
+1. set the value of the vector
+2. get the value of the vector
+3. set the value of the mean
+4. get the value of the mean
+
+What is happening here is that we actually create a vector that has some
+embedded functions, **set**, **get**, **setmean** and **getmean**.
+
+These can be called (as you will see later) from the variable, and from here we
+we can run those funcitons updating the values of the variable.
+
+```{r}
+makeVector <- function(x = numeric()) {
+    m <- NULL
+    set <- function(y) { ## The set value function
+        x <<- y
+        m <<- NULL
+    }
+    get <- function() x ## The get value function
+    setmean <- function(mean) m <<- mean ## The set mean function
+    getmean <- function() m ## The get mean function
+    
+    ## Lists the functions
+    list(set = set, get = get,
+         setmean = setmean,
+         getmean = getmean)
+}
+```
+
+The second function calculates the mean of the special "vector" created with
+the first function. However, it first checks to see if the mean has already
+been calcualted. If so, it gets the mean from the cache and skips the
+computation. Otherwise, it calcuates the mean of the data and sets the value
+of mean in the cache via the setmean function.
+
+```{r}
+cachemean <- function(x, ...) {
+    m <- x$getmean() ## Check to see if the mean has been set
+    if(!is.null(m)) { ## If the mean has been set, then return the value
+        message("getting cached data")
+        return(m)
+    }
+    
+    ## Else set the value of mean
+    data <- x$get()
+    m <- mean(data, ...)
+    x$setmean(m)
+    m
+}
+```
+
+Now lets test the functions
+
+First we set the value of the vector
+
+```{r}
+testVector <- makeVector(c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100))
+```
+
+Then we can check that the vector exists
+
+```{r}
+testVector$get()
+```
+
+Now that we can see that the vector exists we can set the mean
+
+```{r}
+testVector$setmean(mean(testVector$get()))
+```
+
+Now that the mean has been set, we can check the value of mean
+
+```{r}
+testVector$getmean()
+```
+

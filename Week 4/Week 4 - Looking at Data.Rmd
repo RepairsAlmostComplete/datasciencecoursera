@@ -1,0 +1,131 @@
+---
+title: "Week 4 - Looking at Data"
+author: "Sally Longmore"
+date: "30/01/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Whenever you are working with a new dataset, the first thing you should do is
+look at it and ask yourself some questions.
+- What is the format of the data?
+- What are the dimensions?
+- What are the variable names?
+- How are the variables stored?
+- Are there missing data?
+- Are there any flaws in the data?
+
+This lesson will teach you how to answer these questions and more using R's
+built-in functions. We will be using a dataset constructed from the United
+States Department of Agriculture's PLANTS datbase.
+
+(http://plants.usda.gov/adv_search.html)
+
+The data is stored in a variable called plants.
+
+```{r}
+plants <- readRDS("plants.rds")
+```
+
+
+Type ls() to list the variables in your workspace, among which should be plants.
+
+```{r}
+ls()
+```
+
+Let's begin by checking the class of the plants variable with class(plants). 
+This will give us a clue as to the overall structure of the data.
+
+```{r}
+class(plants)
+```
+
+It's very common for data to be stored in a data frame. It is the default class for data read into R using functions like read.csv() and read.table(), which you will learn about in another lesson.
+
+Since the dataset is stored in a data frame, we know it is retangular. In other words, it has two dimensions (rows and columns) and fits neatly into a table or spreadsheet. Use dim(plants) to see exactly how many rows and columns we are dealing with.
+
+```{r}
+dim(plants)
+```
+
+The first number you see (5166) is the number of rows (observations) and the second number (10) is the number of columns (variables).
+
+You can also use nrow(plants) to see only the number of rows.
+
+```{r}
+nrow(plants)
+```
+
+And you can run ncol(plants) to see the number of columns.
+
+```{r}
+ncol(plants)
+```
+
+If you are curious about how much space the dataset is occupying in memory, you can use object.size(plants).
+
+```{r}
+object.size(plants)
+```
+
+Now that we have a sense of the shape and size of the dataset, let's get a feel for what is inside. we can use names(plants) to return a character vector of column (i.e. variable) names.
+
+```{r}
+names(plants)
+```
+
+We have applied fairly descriptive variable names to this dataset, but that won't always be the case. A logical next step is to peak at the actual data. However, our dataset contains over 5,000 observations (rows), so it is impractical to view the whole dataset at once.
+
+The head() function allows you to preview the top of the dataset.
+
+```{r}
+head(plants)
+```
+
+Take a minute to look through and understand the output above. Each row is labelled with the observation number and each column with the variable name. Your screen is probably not wide enough to view all 10 columns side-by-side, in which case R displays as many columns as it can on each line before continuing to the next.
+
+By default, head() shows you the first six rows of data. You can alter this behaviour by passing as a second argument the number of rows you would like to view. Use head() to preview the first 10 rows of plants.
+
+```{r}
+head(plants, 10)
+```
+
+The same applies for using tail() to preview the end of the dataset. Use tail() to view the last 15 rows.
+
+```{r}
+tail(plants, 15)
+```
+
+After previewing the top and bottom of the data, you probably noticed lots of NAs, which are R's placeholders for missing values. Use summary(plants) to get a better feel for how each variable is distributed and how much of the dataset is missing.
+
+```{r}
+summary(plants)
+```
+
+summary() provides different output for each variable, depending on its class. For numeric data such as **Precip_Min**, summary() displays the minimum, 1st quartile, median, mean, 3rd quartile and maximum. These values help us understand how the data are distrubted.
+
+For categorical variables (called 'factor' variables in R), summary() displays the number of times each value (or 'level') occurs in the data. For exmaple, each value of **Scientific_Name** only appears once, since it is unique to specific plants. In contrast, the summary for Duration (also a factor variable) tells us that our dataset contains 3031 Perennial plants, 682 Annual plants etc.
+
+You can see that R truncated the summary for **Active_Growth_Period** by including a catch-all category called **Other**. Since it is a vategorical/factor variable, we can see how many times each value actually occurs in the data with table(plants#Active_Growth_Period).
+
+```{r}
+table(plants$Active_Growth_Period)
+```
+
+Each of the functions we have introduced so far has its place in helping you to better understand the structure of your data. However, we have left the best for last.
+
+Perhaps the most useful and concise function for understanding the **str**ucture of your data is the str() function.
+
+```{r}
+str(plants)
+```
+
+The beauty of str() is that it combines many of the features of the other functions you have already seen, all in a concise and readable format. At the very top, it tells us that the class of plants is **data.frame** and that it has 5166 observations and 10 variables. It then gives us the name and class of each variable, as well as a preview of it's contents.
+
+str() is actually a very general function that you can use on most objects in R. Any time you want to understand the structure of something (a dataset, function, etc.), str() is a good place to start.

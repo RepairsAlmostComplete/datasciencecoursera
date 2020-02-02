@@ -1,0 +1,103 @@
+---
+title: "Week 3 - vapply and tapply"
+author: "Sally Longmore"
+date: "29/01/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r include=FALSE}
+flags <- readRDS(file = "flags.rds");
+```
+
+
+In the last lesson, you learned about the two most fundamental members of R's *apply family of functions: lapply() and sappy(). Both take a list as input, apply a function to each element of the list, then combine and return the result. lapply() always returns a list, whereas sapply attempts to simplify the result.
+
+In this lesson, you'll learn how to use **vapply()** and **tapply()**, each of which serves a very specific purpose within the Split-Apply-Combine methodology. For consistency, we'll use the same dataset we used in the **lapply and sapply** lesson.
+
+The Flags dataset will be used again, which is stored in a variable called **flags**.
+
+As you saw in the last lesson, the unique() function returns a vector of unique values contained in the object passed to it. THerefore, sapply(flags, unique) returns a list containing one vector of unique values for each column of the flags dataset.
+
+```{r}
+sapply(flags, unique)
+```
+
+What if you had forgotten how unique() works and mistakenly thought it returns the **number** of unique values contianed in the object passed to it? Then you might have incorrectly expected sapply(flags, unique) to return a numeric vector, since each element of the list returned would contain a single number and sapply() could then simplify the result to a vector.
+
+When working interactively (at the prompt), this is not much of a problem, since you see the result immediately and will quickly recognize your mistake. However, when working non-interactively (e.g. writing your own functions), a misunderstanding may go undetected and cause incorrect results later on. Therefore, you may wish to be more careful and that's where vapply() is useful.
+
+Whereas sapply tries to *guess* the correct format of the result, vapply() allows you to specify it explicitly. If the result doesn't match the format you specify, vapply() will throw an error, causing the operation to stop. This can prevent signficiant problems in your code that might be cause by getting an unexpected return value from sapply().
+
+Try vapply(flags, unique, numeric(1)), which says that you expect each element of the result to be a numeric vector of length 1. Since this is NOT actually the case, **YOU WILL GET AN ERROR**. Once you get the error, type ok() to continue to the next question.
+
+```{r eval=FALSE, warning=TRUE, include=TRUE}
+vapply(flags, unique, numeric(1))
+```
+
+Recall from the previous lesson that sapply(flags, class) will return a character vector containing the class of each column in the dataset. Try that again now to see the result.
+
+```{r}
+sapply(flags, class)
+```
+
+If we wish to be explicit about the format of the result we expect, we can use vapply(flags, class, character(1)). The **character(1)** argument tells R that we expect the class function to return a character vector of length 1 when applied to **EACH** column of the flags dataset.
+
+```{r}
+vapply(flags, class, character(1))
+```
+
+Note that since our expectation was correct (i.e. character(1)), the vapply() result is identical to the sapply() result -- a character vector of column classes.
+
+You may think of vapply() as being **safer** than sapply(), since it requires you to sepcify the format of the output in advance, instead of just allowing R to **guess** what you wanted. In addition, vapply() may perform faster than sapply for large datasets. However, when doing data analysis interactively, sapply() saves you some typeing and will often be good enough.
+
+As a data analyst, you'll often wish to split your data up into groups based on the value of some variable, then apply a function to the members of each group. The next function we will look at **tapply()** does exactly that.
+
+The **landmass** variable in our dataset takes integer values between 1 and 6, each of which represents a different part of the world. Use table(flags$landmass) to see how many flags/countries fall into each group.
+
+```{r}
+table(flags$landmass)
+```
+
+The **animate** variable in our dataset takes the value 1 if a countries flag contains an animate image (e.g. an eagle, a tree, a human hand) and 0 otherwise. Use table(flags$animate) to see how many flags contain an animate imate.
+
+```{r}
+table(flags$animate)
+```
+
+This tells us that 39 flags contain an animate object (animate = 1) and 155 do not (animate = 0).
+
+If you take the arithmetic mean of a bunch of 0s and 1s, you get the proportion of 1s. Use the tapply(flags$animate, flags$landmass, mean) to apply the mean function to the **animate** variable seperately for each of the six landmass groups, this giving is the proportion of flags containing an animate image WITHIN each landmass group.
+
+```{r}
+tapply(flags$animate, flags$landmass, mean)
+```
+
+The first landmass group (landmass = 1) corresponds to North America and contains the highest proportion of flags with animate image (0.4194).
+
+Similarly, we can look at a summary of population values (in round millions) for countries with and without the colour red on their flag with tapply(flags$popluation, flags$red, summary).
+
+```{r}
+tapply(flags$population, flags$red, summary)
+```
+
+
+What is the median popluation (in millions) for countries **without** the colour red on their flag?
+
+3.0
+
+Lastly, use the same approach to look at a summary of population values for each of the six landmasses.
+
+```{r}
+tapply(flags$population, flags$landmass, summary)
+```
+
+What is the maximum popluation (in millions) for the fourth landmass group (Africa)?
+
+56.0
+
