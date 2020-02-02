@@ -60,9 +60,9 @@ rankhospital <- function(state, outcome, num = "best") {
     
     ## Handle if num set to "best" or "worst"
     if (class(num) == "character") {
-        if (num == "best") {
+        if (tolower(num) == "best") {
             num <- 1;
-        } else if (num == "worst") {
+        } else if (tolower(num) == "worst") {
             num <- nrow(selData)
         }
     }
